@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}登录 - 睿洁机器人智能客服{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>睿洁机器人智能客服</h1>
+            <p>请登录您的账号</p>
+        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="user_id">用户ID</label>
+                <input type="text" id="user_id" name="user_id" placeholder="请输入用户ID" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码" required>
+            </div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            <button type="submit" id="login-btn">登录</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const errorDiv = document.getElementById('error-message');
+    btn.textContent = '登录中...';
+    btn.disabled = true;
+    errorDiv.style.display = 'none';
+
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: document.getElementById('user_id').value,
+                password: document.getElementById('password').value
+            })
+        });
+        const data = await res.json();
+        if (data.success) {
+            window.location.href = '/chat';
+        } else {
+            errorDiv.textContent = data.message;
+            errorDiv.style.display = 'block';
+        }
+    } catch (err) {
+        errorDiv.textContent = '网络错误，请稍后重试';
+        errorDiv.style.display = 'block';
+    }
+
+    btn.textContent = '登录';
+    btn.disabled = false;
+});
+</script>
+{% endblock %}

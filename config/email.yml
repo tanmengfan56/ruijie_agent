@@ -1,0 +1,10 @@
+# SMTP服务器
+smtp_server: "smtp.qq.com"
+# SSL端口
+smtp_port: 465
+# 发件人邮箱
+sender_email: "1253725056@qq.com"
+# 授权码
+auth_code: "fwwlmdyyexxmifcc"
+# 发件人昵称
+sender_name: "睿洁机器人智能客服"
